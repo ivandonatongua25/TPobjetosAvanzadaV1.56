@@ -5,7 +5,7 @@ const http = require("http").createServer(app);
 const cors = require("cors");
 require('dotenv').config();
 const PORT = process.env.PORT || 5000;
-const { addUser, getUser, deleteUser, getUsers } = require("./users");
+const { addUser, getUser, deleteUser, getUsers } = require("./controllers/users");
 
 const uri = process.env.MONGO_URI;
 
@@ -26,25 +26,25 @@ app.get("/", (req, res) => {
   res.send("Server is up and running");
 });
 
-app.get("/users",(req,res) =>{
+app.get("/users", async (req,res) =>{
 
     users = await getUsers();
     res.json({users:users});
 
 });
 
-app.get("/users/:email",(req,res) =>{
+app.get("/users/:email", async (req,res) =>{
     const email = req.params.email;
     user = await getUser(email);
     res.json({user:user}); 
 })
 
-app.delete("/users/:email",(req,res) =>{
+app.delete("/users/:email",async (req,res) =>{
     const email = req.params.email;
     user = await getUser(email);
     res.json({user:user}); 
 })
 
 http.listen(PORT, () => {
-  console.log("Listening to ${PORT}");
+  console.log(`Listening to ${PORT}`);
 });
